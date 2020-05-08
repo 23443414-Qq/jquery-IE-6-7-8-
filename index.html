@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>demo</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <style>
+        h3 {
+            text-align: center;
+            color: #606060
+        }
+
+        body {
+            text-decoration: none;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+            -webkit-user-select: none;
+            -moz-user-focus: none;
+            -moz-user-select: none;
+        }
+
+        .container {
+            width: 900px;
+            margin: 50px auto;
+        }
+
+        .demo {
+            overflow: hidden;
+        }
+
+        .demo li {
+            width: 180px;
+            height: 35px;
+            float: left;
+            border: 1px solid #000;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            list-style-type: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo li>img {
+            width: 180px;
+            height: 35px;
+            cursor: move;
+            opacity: 0;
+        }
+
+        .demo .itemXTDH {
+            width: 100%;
+            position: absolute;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #ccc;
+            z-index: -1;
+            line-height: 35px;
+            padding-left: 10px;
+            box-sizing: border-box;
+        }
+
+        .demo .itemXTDH img {
+            margin-right: 6px;
+        }
+
+        #bunSURE {
+            width: 160px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: skyblue;
+            position: absolute;
+            top: 40px;
+        }
+
+        #bunclo {
+            width: 160px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: skyblue;
+            position: absolute;
+            top: 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>拖动单个导航进行系统导航排序</h3>
+    <div class="container">
+        <ul class="demo">
+        </ul>
+        <div id="bunSURE">保存设置</div>
+        <div id="bunclo">恢复</div>
+    </div>
+
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="./jq-migrate.js"></script>
+    <script type="text/javascript" src="./dragsort.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            try {
+                $(".demo").dragsort({
+                    dragSelector: "img",
+                    dragBetween: true,
+                    dragEnd: function () {
+
+                    }
+                });
+            } catch (e) {
+                console.log(e)
+            }
+        });
+        $(function () {
+            getdata()
+            // 获取数据
+            function getdata() {
+                var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                var html = ''
+                for (var i = 0; i < data.length; i++) {
+                    html += '<li class="li" id=' + data[i] + '><img src="./images/a3.png">' +
+                        "<div class='itemXTDH'><img style='width:22px' src='./images/a1.png'>" + data[i] + "</div>"
+                        + '</li>'
+                }
+                $('.demo').html(html);
+            }
+            // 取消按钮点击
+            $("#bunclo").click(function () {
+                getdata()
+            })
+            // 移动后每个菜单鼠标离开时触发
+            $(".demo .li").live('mouseup', function () {
+                var id = $(this).attr("id")
+                console.log($(this).attr("id"))
+            })
+            $("#bunSURE").click(function () {
+                var xtdh = []
+                var arr = $(".li")
+                for (var i = 0; i < arr.length; i++) {
+                    xtdh.push({ id: arr[i].id })
+                }
+                console.log(xtdh)
+            })
+        })
+    </script>
+</body>
+
+</html>
