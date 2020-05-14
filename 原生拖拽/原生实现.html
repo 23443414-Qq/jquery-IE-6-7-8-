@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>拖拽块</title>
+    <style>
+        body {
+            background: #fff;
+            -o-user-select: none;
+            -moz-user-select: none;
+            /*火狐 firefox*/
+            -webkit-user-select: none;
+            /*webkit浏览器*/
+            -ms-user-select: none;
+            /*IE10+*/
+            -khtml-user-select: none;
+            /*早期的浏览器*/
+            user-select: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            width: 600px;
+        }
+
+        .card {
+            float: left;
+            width: 100px;
+            height: 60px;
+            border: 1px solid #aaaaaa;
+            border-radius: 5px;
+            margin: 10px;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        .card:hover {
+            cursor: all-scroll;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+<script>
+    let draggingCard;
+    let draggingCardOrder;
+    let draggingCardPosition;
+    let animating;
+
+    const container = document.getElementById("container");
+    for (let i = 0; i < 20; i++) {
+        const card = document.createElement("DIV");
+        card.classList.add("card");
+        card.textContent = i + 1;
+        card.setAttribute("draggable", true);
+        container.appendChild(card);
+    }
+    container.addEventListener("dragstart", (event) => {
+        draggingCard = event.target;
+    });
+    container.addEventListener("dragover", (event) => {
+        draggingCardOrder = Array.from(draggingCard.parentElement.children).indexOf(draggingCard);
+        const node = event.target;
+        if (node !== draggingCard && !animating) {
+            const order = Array.from(node.parentElement.children).indexOf(node);
+            //从大的序号移入到小的序号
+            if (draggingCardOrder > order) {
+                node.parentElement.insertBefore(draggingCard, node);
+            }
+            //从小的序号移入到大的序号
+            else {
+                //节点不是最后一个
+                if (node.nextElementSibling) {
+                    node.parentElement.insertBefore(draggingCard, node.nextElementSibling);
+                }
+                // 节点是最后一个了，不能再用insertBefore  appendChild
+                else {
+                    node.parentElement.appendChild(draggingCard);
+                }
+            }
+        }
+    });
+</script>
+
+</html>

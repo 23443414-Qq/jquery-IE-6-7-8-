@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box{
+            width: 150px;
+            height:150px;
+            background:red;
+            position: absolute;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+   <script type="text/javascript">
+    box.onmousedown = function (event) {
+        var e = event || window.event;
+        //获取event对象
+        var X = e.clientX - box.offsetLeft;
+        //计算点击鼠标到盒子水平距离（鼠标x轴-盒子的左边界）
+        var Y = e.clientY - box.offsetTop;
+        //计算点击鼠标到盒子垂直距离（鼠标y轴-盒子的上边界）
+        document.onmousemove = function (e) {
+            var e = e || event;
+            //获取event对象
+            var mx = e.clientX - X;
+            //计算移动的距离（根据鼠标到盒子距离不变【移动后的水平-鼠标到盒子水平距离】）
+            var my = e.clientY - Y;
+            //计算移动的距离（根据鼠标到盒子距离不变【移动后的垂直-鼠标到盒子垂直距离】）
+            var wx = document.documentElement.clientWidth - box.offsetWidth;
+            //计算水平最大移动距离(浏览器可见宽-盒子的宽)
+            var wy = document.documentElement.clientHeight - box.offsetHeight;
+            //计算垂直最大移动距离(浏览器可见高-盒子的高)
+            if (mx < 0) mx = 0;
+            //左边不超出宽
+            if (my < 0) my = 0;
+            //左边不超出高
+            if (mx > wx) mx = wx;
+            //右边不超出宽
+            if (my > wy) my = wy;
+            //右边不超出高
+
+            box.style.left = mx + "px";
+            //移动后的左边界
+            box.style.top = my + "px";
+            //移动后的上边界
+        }
+    }
+    box.onmouseup = function () {
+        document.onmousemove = null;
+        //移动的函数为空，停止函数。
+    }
+</script>
+</body>
+</html>
